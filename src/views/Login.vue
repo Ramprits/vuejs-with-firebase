@@ -17,7 +17,7 @@
                 <Field
                   class="input"
                   type="text"
-                  name="identifier"
+                  name="email"
                   placeholder="name@email.com"
                 />
                 <ErrorMessage name="identifier" />
@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import { login } from "../services/auth";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 export default {
@@ -120,7 +121,7 @@ export default {
   },
   data() {
     const schema = yup.object({
-      email: yup.string().required().email(),
+      email: yup.string().required().email("Please eneter valid email!"),
       password: yup.string().required().min(8),
     });
 
@@ -129,8 +130,8 @@ export default {
     };
   },
   methods: {
-    submit(values) {
-      console.log(values);
+    async submit(values) {
+      this.$store.dispatch("auth/signIn", values);
     },
   },
 };
